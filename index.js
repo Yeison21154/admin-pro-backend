@@ -7,12 +7,14 @@ const cors = require('cors')
 const app = express();
 //Configurar CORS
 app.use(cors());
+//lectura del Body
+app.use(express.json());
 //Base de Datos
 dbConnection();
 //rutas
-app.get('/',(req,res)=>{
-    res.status(200).json({ok:true,msg:"Todo Ok"});
-})
+app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
+
 
 app.listen(process.env.PORT,()=>{
     console.log("Servidor corriendo en Servidor "+process.env.PORT);
