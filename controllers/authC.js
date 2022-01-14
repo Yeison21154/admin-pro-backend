@@ -1,4 +1,5 @@
 const bcrypt  = require('bcryptjs');
+const { googleVerify } = require('../helpers/googleVerify');
 const { validaJWT } = require('../helpers/validarJWT');
 const Usuario = require("../models/usuarioM");
 
@@ -33,6 +34,44 @@ const login = async(req,res)=>{
         })
     }
 }
+const googleSingIng = async(req,res)=>{
+    const tokenGoogle = req.body.token;
+    
+    try {
+        const {name,picture,email} = await googleVerify(tokenGoogle);
+        const usuarioDB = await Usuario.findOne({email});
+        let usuario; 
+        if(!usuarioDB){
+            usuario = new Usuario({
+                nombre:name,
+                email,
+                password:'123456',
+                img:picture,
+                google:true
+            });
+            console.log("registro google");
+        }else{
+            usuario = usuarioDB;
+            usuario.google = true;
+            usuario.password = '123456';
+            console.log("registro solo");
+        }
+        await usuario.save();
+        const token = await validaJWT(usuario.id);
+        //jwt
+        res.json({
+            ok:true,
+            token
+        })
+    } catch (error) {
+         res.status(401).json({
+            ok:false,
+            msg:"token no Correcto"
+        })
+    }
+  
+
+}
 
 
-module.exports={login}
+module.exports={login,googleSingIng}
