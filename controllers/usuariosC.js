@@ -1,13 +1,20 @@
-const Usuario = require('../models/usuario');
+const Usuario = require('../models/usuarioM');
 const bcrypt  = require('bcryptjs');
 const { validaJWT } = require('../helpers/validarJWT');
 
 const getUsuarios = async (req,res)=>{
-    const usuarios = await Usuario.find({},'nombre email rol google Estado');
+    const desde = Number(req.body.desde) || 0;
+    const [usuarios,total] = await Promise.all([
+        Usuario.find({},'nombre email rol google Estado img')
+               .skip(desde)
+               .limit(5),
+        Usuario.countDocuments()
+    ])
     res.status(200).json({
         ok:true,
         usuarios,
-        uid:req.uid
+        uid:req.uid,
+        total
     });
 }
 const crearUsuarios = async (req,res) =>{

@@ -1,6 +1,6 @@
 const bcrypt  = require('bcryptjs');
 const { validaJWT } = require('../helpers/validarJWT');
-const Usuario = require("../models/usuario");
+const Usuario = require("../models/usuarioM");
 
 
 const login = async(req,res)=>{
