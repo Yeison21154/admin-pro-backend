@@ -10,8 +10,7 @@ const getMedicos = async (req,res)=>{
 }
 const postMedicos = async(req,res)=>{
     const uid= req.uid;
-    const idHospital = "61dc13f7d207a066c2ca7eed";
-    const medicos = new Medicos({usuario:uid,hospital:idHospital,...req.body});
+    const medicos = new Medicos({usuario:uid,...req.body});
     try {
         const insertMedico = await medicos.save();
             res.json({
@@ -26,16 +25,37 @@ const postMedicos = async(req,res)=>{
         })
     }
 }
-const putMedicos = (req,res)=>{
+const putMedicos = async (req,res)=>{
+    const id = req.params.id;
+    const uid = req.uid;
+    const BDmedico = await Medicos.findById(id);
+    if(!BDmedico){
+        return res.status(404).json({
+            ok:false,
+            msg:"El id del Medico no Existe"
+        });
+    }
+    const medicoCambios = {...req.body,usuario:uid};
+    const medicoActualizado = await Medicos.findByIdAndUpdate(id,medicoCambios,{new:true});
     res.json({
         ok:true,
-        msg:"putMedicos"
+        medicoActualizado
     })
 }
-const deleteMedicos = (req,res)=>{
+const deleteMedicos = async (req,res) =>{
+    const id = req.params.id;
+    const {nombre,img,usuario,hospital,...valor} = req.body;
+    const BDmedico = await Medicos.findById(id);
+    if(!BDmedico){
+        return res.status(404).json({
+            ok:false,
+            msg:"El id del medico no existe"
+        });
+    }
+    const eliminarMedico = await Medicos.findByIdAndUpdate(id,valor,{new:true})
     res.json({
         ok:true,
-        msg:"deleteMedicos"
+        msg:"usuario Eliminado"
     })
 }
 module.exports={getMedicos,postMedicos,putMedicos,deleteMedicos}

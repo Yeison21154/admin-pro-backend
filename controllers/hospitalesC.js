@@ -24,16 +24,40 @@ const postHospital = async (req,res)=>{
         })
     }
 }
-const putHospital = (req,res)=>{
+const putHospital = async (req,res)=>{
+    const idHospital = req.params.id;
+    const uid = req.uid;
+    const hospitalBD = await Hospital.findById(idHospital);
+    if(!hospitalBD){
+        return res.status(404).json({
+            ok:false,
+            msg:"el id del Hospital no es Valido"
+        });
+    }
+    const hospitalCambios = {
+        ...req.body,
+        usuario:uid
+    }
+    const hospitalActualizado  = await Hospital.findByIdAndUpdate(idHospital,hospitalCambios,{new:true});
     res.json({
         ok:true,
-        msg:"putHospital"
-    })
+        hospitalActualizado
+    });
 }
-const deleteHospital = (req,res)=>{
+const deleteHospital = async (req,res)=>{
+    const idHospital = req.params.id;
+    const hospitalBD = await Hospital.findById(idHospital);
+    if(!hospitalBD){
+        return res.status(404).json({
+            ok:false,
+            msg:"el id del Hospital no es Valido"
+        });
+    }
+    await Hospital.findByIdAndDelete(idHospital);
+    
     res.json({
         ok:true,
-        msg:"deleteHospital"
-    })
+        msg:"Hospital Eliminado"
+    });
 }
 module.exports={getHospital,postHospital,putHospital,deleteHospital}

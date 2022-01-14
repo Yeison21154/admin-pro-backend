@@ -17,6 +17,10 @@ hospital:{
     required:true,
     type:Schema.Types.ObjectId,
     ref:'Hospitales'
+},
+estado:{
+type:String,
+default:"activo"
 }
 },{collection:'medicos'});
 //Modificar lo que me va a retornar mi objeto JSON

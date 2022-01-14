@@ -14,7 +14,15 @@ router.post('/',[
     check('hospital',"El nombre del Id debe ser Valido").isMongoId(),
     validarCampos
 ],postMedicos);
-router.put('/:id',[JWT],putMedicos);
-router.patch('/:id',[JWT],deleteMedicos)
+router.put('/:id',[
+    JWT,
+     check('nombre',"El nombre del Medico es necesario").not().isEmpty(),
+     validarCampos
+    ],putMedicos);
+router.patch('/:id',[
+    JWT,
+    check('estado',"El estado es Obligatorio").not().isEmpty(),
+    validarCampos
+],deleteMedicos)
 
 module.exports = router;

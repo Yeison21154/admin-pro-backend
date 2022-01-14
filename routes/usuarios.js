@@ -21,7 +21,8 @@ router.put('/:id',[
     validarCampos,
 ],ActualizarUsuario);
 router.patch('/:id',[
-    check('Estado','El estado del usuario es obligatorio').not().isEmpty()
+    check('Estado','El estado del usuario es obligatorio').not().isEmpty(),
+    validarCampos
 ],deleteUsuario)
 
 module.exports = router;
