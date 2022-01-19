@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
-const {getMedicos,postMedicos,putMedicos,deleteMedicos} = require('../controllers/medicosC');
+const {getMedicos,postMedicos,putMedicos,deleteMedicos,getMedicosId} = require('../controllers/medicosC');
 const {validarCampos}= require('../middlewares/validar-campos');
 const { route } = require('express/lib/application');
 const { JWT } = require('../middlewares/validar-JWT');
@@ -23,6 +23,11 @@ router.patch('/:id',[
     JWT,
     check('estado',"El estado es Obligatorio").not().isEmpty(),
     validarCampos
-],deleteMedicos)
+],deleteMedicos);
+router.get('/:id',[
+    JWT,
+    check('id',"El nombre del Id debe ser Valido").isMongoId(),
+    validarCampos
+],getMedicosId)
 
 module.exports = router;

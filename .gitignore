@@ -1,3 +1,18 @@
 
 
 node_modules/
+
+uploas/hospitales/**.jpg
+uploas/hospitales/**.png
+uploas/hospitales/**.git
+uploas/hospitales/**.jpeg
+
+uploas/medicos/**.jpg
+uploas/medicos/**.png
+uploas/medicos/**.git
+uploas/medicos/**.jpeg
+
+uploas/usuarios/**.jpg
+uploas/usuarios/**.png
+uploas/usuarios/**.git
+uploas/usuarios/**.jpeg

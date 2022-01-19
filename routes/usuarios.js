@@ -15,12 +15,14 @@ router.post('/',[
     validarCampos,
 ],crearUsuarios);
 router.put('/:id',[
+    JWT,
     check('nombre','El nombre en Obligatorio').not().isEmpty(),
     check('email',"El Email es Obligatorio y debe ser un Correo").isEmail(),
     check('rol','El rol es Obligatoria').not().isEmpty(),
     validarCampos,
 ],ActualizarUsuario);
 router.patch('/:id',[
+    JWT,
     check('Estado','El estado del usuario es obligatorio').not().isEmpty(),
     validarCampos
 ],deleteUsuario)

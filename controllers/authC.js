@@ -71,10 +71,11 @@ const googleSingIng = async(req,res)=>{
 const renewToken = async(req,res) =>{
     const uid = req.uid;
     const token = await validaJWT(uid);
-
+    const usuarioDB = await Usuario.findById(uid);
     res.json({
         ok:true,
-        token
+        token,
+        usuarioDB
     })
 }
 

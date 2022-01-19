@@ -3,13 +3,13 @@ const bcrypt  = require('bcryptjs');
 const { validaJWT } = require('../helpers/validarJWT');
 
 const getUsuarios = async (req,res)=>{
-    const desde = Number(req.body.desde) || 0;
+    const desde = Number(req.query.desde) || 0;
     const [usuarios,total] = await Promise.all([
-        Usuario.find({},'nombre email rol google Estado img')
+        Usuario.find({Estado:'Activo'},'nombre email rol google Estado img')
                .skip(desde)
                .limit(5),
         Usuario.countDocuments()
-    ])
+    ]);
     res.status(200).json({
         ok:true,
         usuarios,
@@ -22,9 +22,9 @@ const crearUsuarios = async (req,res) =>{
     try {
         const existeE = await Usuario.findOne({email});
         if(existeE){
-            return res.json({
+            return res.status(404).json({
                 ok:false,
-                msg:"El Usuario ya Existe"
+                msg:"El Correo ya Existe"
             })
         }
         const usuario = new Usuario(req.body);
@@ -60,7 +60,7 @@ const ActualizarUsuario = async(req,res) =>{
            })
        }
        //aca desestructuro mi body y le quito los campos que no quiero mandar
-       const {password,google,email,...campos} = req.body;
+       const {password,google,Estado,email,...campos} = req.body;
        if(usuarioDB.email !== email){
             const existeEmail = await Usuario.findOne({email});
             if(existeEmail){
@@ -70,7 +70,14 @@ const ActualizarUsuario = async(req,res) =>{
                 });
             }
        }
-        campos.email = email;
+       if(!usuarioDB.google){
+           campos.email = email;
+       }else if (usuarioDB.email !== email){
+        return res.status(404).json({
+            ok:false,
+            msg:"usuarios de Google no pueden cambiar su correo"
+        });
+       }
         const UserActualizado = await Usuario.findByIdAndUpdate(uid,campos,{new:true});
         res.json({
             ok:true,
