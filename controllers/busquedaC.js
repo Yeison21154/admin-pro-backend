@@ -7,7 +7,7 @@ const getTodo = async (req,res) =>{
     const expReg = RegExp(argumento,'i');
     const [usuarios, medicos,hospitales] = await Promise.all([
          Usuario.find({nombre:expReg}),
-         Medicos.find({nombre:expReg}),
+         Medicos.find({nombre:expReg,estado:'activo'}),
          Hospitales.find({nombre:expReg}),
     ])
     try {

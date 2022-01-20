@@ -3,6 +3,7 @@ const req = require('express/lib/request');
 const { googleVerify } = require('../helpers/googleVerify');
 const { validaJWT } = require('../helpers/validarJWT');
 const Usuario = require("../models/usuarioM");
+const {getMenuFronEnd} = require("../helpers/menuFront");
 
 
 const login = async(req,res)=>{
@@ -26,7 +27,8 @@ const login = async(req,res)=>{
     try {
         res.json({
             ok:true,
-            token
+            token,
+            menu: getMenuFronEnd(BDuser.rol)
         })
     } catch (error) {
         res.status(500).json({
@@ -59,7 +61,8 @@ const googleSingIng = async(req,res)=>{
         //jwt
         res.json({
             ok:true,
-            token
+            token,
+            menu: getMenuFronEnd(usuarioDB.rol)
         })
     } catch (error) {
          res.status(401).json({
@@ -75,7 +78,8 @@ const renewToken = async(req,res) =>{
     res.json({
         ok:true,
         token,
-        usuarioDB
+        usuarioDB,
+        menu: getMenuFronEnd(usuarioDB.rol)
     })
 }
 
