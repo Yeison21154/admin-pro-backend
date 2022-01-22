@@ -75,12 +75,20 @@ const renewToken = async(req,res) =>{
     const uid = req.uid;
     const token = await validaJWT(uid);
     const usuarioDB = await Usuario.findById(uid);
-    res.json({
-        ok:true,
-        token,
-        usuarioDB,
-        menu: getMenuFronEnd(usuarioDB.rol)
-    })
+    try {
+        res.json({
+            ok:true,
+            token,
+            usuarioDB,
+            menu: getMenuFronEnd(usuarioDB.rol)
+        })
+    } catch (error) {
+        res.status(401).json({
+            ok:false,
+            msg:"Hable con el Administrador"
+        })
+    }
+  
 }
 
 module.exports={login,googleSingIng,renewToken}
