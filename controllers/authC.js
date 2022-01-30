@@ -1,15 +1,19 @@
 const bcrypt  = require('bcryptjs');
 const req = require('express/lib/request');
 const { googleVerify } = require('../helpers/googleVerify');
-const { validaJWT } = require('../helpers/validarJWT');
+const { validaJWT } = require('../helpers/generaJWT');
 const Usuario = require("../models/usuarioM");
+const {dbConnet} = require('../database/configSQL')
 const {getMenuFronEnd} = require("../helpers/menuFront");
 
 
 const login = async(req,res)=>{
     const {email,password} = req.body;
+    const con = await dbConnet();
+    const query = await con.request().query("select * from usuarios");
+    //const BDuser = await Usuario.findOne({email});
+    const BDuser = await query.findOne({email});
 
-    const BDuser = await Usuario.findOne({email});
     if(!BDuser){
         return res.status(404).json({
             ok:false,
@@ -72,9 +76,11 @@ const googleSingIng = async(req,res)=>{
     }
 }
 const renewToken = async(req,res) =>{
+    const con = await dbConnet();
+    const query = await con.request().query("select * from usuarios");
     const uid = req.uid;
     const token = await validaJWT(uid);
-    const usuarioDB = await Usuario.findById(uid);
+    const usuarioDB = await query.findById(uid);
     try {
         res.json({
             ok:true,

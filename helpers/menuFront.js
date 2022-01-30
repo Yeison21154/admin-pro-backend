@@ -6,9 +6,7 @@ const getMenuFronEnd = (role="USER_ROLE") =>{
             submenu:[
             {titulo: 'Dashboard',url:'/'},
             {titulo: 'ProgressBar',url:'progress'},
-            {titulo: 'Graficas',url:'grafica1'},
-            {titulo: 'promesas',url:'promesas'},
-            {titulo: 'rxjs',url:'rxjs'}
+            {titulo: 'Graficas',url:'grafica1'}
         ]
         },
             {titulo:'Mantenimiento',

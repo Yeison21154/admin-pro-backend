@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const { listen } = require('express/lib/application');
 const {dbConnection} = require('./database/config');
+const {dbConnet}  = require('./database/configSQL');
 const  path = require('path');
 
 //Configurar CORS
@@ -11,6 +12,7 @@ const cors = require('cors')
 const app = express();
 //Base de Datos
 dbConnection();
+dbConnet();
 app.use(express.static('public'));
 app.use(cors());
 //lectura del Body

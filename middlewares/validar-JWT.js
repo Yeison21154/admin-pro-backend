@@ -12,8 +12,10 @@ const JWT = (req,res,next) =>{
         });
     }
     try {
-     const {uid} = jwt.verify(token,process.env.SECRET_JWT);
-        req.uid = uid;
+     const {uid,nombre}= jwt.verify(token,process.env.SECRET_JWT);
+        req.usuarioT = {uid,nombre}
+        req.uid = uid
+
         next();
 
     } catch (error) {

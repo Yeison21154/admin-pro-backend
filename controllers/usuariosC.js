@@ -1,6 +1,6 @@
 const Usuario = require('../models/usuarioM');
 const bcrypt  = require('bcryptjs');
-const { validaJWT } = require('../helpers/validarJWT');
+const { validaJWT } = require('../helpers/generaJWT');
 
 const getUsuarios = async (req,res)=>{
     const desde = Number(req.query.desde) || 0;
@@ -14,6 +14,7 @@ const getUsuarios = async (req,res)=>{
         ok:true,
         usuarios,
         uid:req.uid,
+        usuarioT:req.usuarioT,
         total
     });
 }
